@@ -26,6 +26,21 @@ Example configuration file (config.json)
     	"currencyDataFilename": "savedData.dat"
     
 	}
+	
+
+How to compile and deploy
+-------------------------
+
+Compile the source code and package it using the maven assembly plugin. Command is:
+
+	mvn assembly:single
+	
+Deploy the jar and the config.json file to your webserver and set up a cron job with the frequency 
+with which you want to receive texts.
+
+NOTE: More the frequency, better would be the line chart.
+
+
 
 Author: Abhishek Dey Das
 
