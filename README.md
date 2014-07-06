@@ -40,8 +40,13 @@ Compile the source code and package it using the maven assembly plugin. Command 
 
 	mvn assembly:single
 	
-Deploy the jar and the config.json file to your webserver and set up a cron job with the frequency 
-with which you want to receive texts.
+To update the database, run
+
+	java -jar <app.jar> update
+	
+To send text and update the database, run
+
+	java -jar <app.jar> send
 
 NOTE: More the frequency, better would be the line chart.
 
