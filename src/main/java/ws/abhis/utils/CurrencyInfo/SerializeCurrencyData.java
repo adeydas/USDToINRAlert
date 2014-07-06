@@ -12,9 +12,14 @@ import org.apache.logging.log4j.Logger;
 
 public class SerializeCurrencyData {
 
-	private static final String currencyDataFilename = "savedData.dat";
+	
 	private static final Logger logger = LogManager
 			.getLogger(SerializeCurrencyData.class);
+	private Configuration config;
+	
+	public SerializeCurrencyData(Configuration config) {
+		this.config = config;
+	}
 
 	public void saveCurrencyData(CurrencyType ct) {
 
@@ -32,7 +37,7 @@ public class SerializeCurrencyData {
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
-			fos = new FileOutputStream(currencyDataFilename);
+			fos = new FileOutputStream(config.getCurrencyDataFilename());
 			out = new ObjectOutputStream(fos);
 			out.writeObject(dataTillNow);
 
@@ -44,7 +49,7 @@ public class SerializeCurrencyData {
 
 	public AllCurrencyData retrieveCurrencyData() {
 
-		File f = new File(currencyDataFilename);
+		File f = new File(config.getCurrencyDataFilename());
 		if (!f.exists()) {
 			return null;
 		}
@@ -52,7 +57,7 @@ public class SerializeCurrencyData {
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 		try {
-			fis = new FileInputStream(currencyDataFilename);
+			fis = new FileInputStream(config.getCurrencyDataFilename());
 			in = new ObjectInputStream(fis);
 			AllCurrencyData p = (AllCurrencyData) in.readObject();
 			in.close();

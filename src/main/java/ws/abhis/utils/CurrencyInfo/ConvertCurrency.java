@@ -19,8 +19,6 @@ import com.twilio.sdk.resource.instance.Message;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,11 +28,12 @@ public class ConvertCurrency {
 	private static final String uri = "http://rate-exchange.appspot.com/currency?from=usd&to=inr";
 	private static final String USER_AGENT = "abhis.ws";
 	private static final Logger logger = LogManager.getLogger();
-	private static final String ACCOUNT_SID = "AC5a016b801a8131bd96bc3e6c7e9a04cf";
-	private static final String AUTH_TOKEN = "76c167f7f5372c8722b4d72d76181da3";
-	private static final String toNumber = "+16147679142";
-	private static final String fromNumber = "+16147100052";
-	private static final String htmlPath = "/var/www/html/visus/";
+	private Configuration config;
+	
+	public ConvertCurrency(Configuration config) {
+		this.config = config;
+	}
+	
 
 	private String getFromApi() throws IOException {
 		URL obj = new URL(uri);
@@ -65,13 +64,13 @@ public class ConvertCurrency {
 		ObjectMapper mapper = new ObjectMapper();
 		CurrencyType objCurrencyType = mapper.readValue(response,
 				CurrencyType.class);
-		SerializeCurrencyData objSerialize = new SerializeCurrencyData();
+		SerializeCurrencyData objSerialize = new SerializeCurrencyData(config);
 		objSerialize.saveCurrencyData(objCurrencyType);
 		return objCurrencyType.getRate();
 	}
-	
+
 	public String createVisualization() throws FileNotFoundException {
-		SerializeCurrencyData obj = new SerializeCurrencyData();
+		SerializeCurrencyData obj = new SerializeCurrencyData(config);
 		AllCurrencyData acd = obj.retrieveCurrencyData();
 		VisualizationTemplate objVisu = new VisualizationTemplate();
 		if (acd != null) {
@@ -79,7 +78,7 @@ public class ConvertCurrency {
 			Random rd = new Random();
 			int nxt = rd.nextInt();
 			String n = Integer.toString(nxt);
-			String totalPath = this.htmlPath + n + ".html";
+			String totalPath = config.getHtmlPath() + n + ".html";
 			PrintWriter out = new PrintWriter(totalPath);
 			out.println(finalHtml);
 			out.close();
@@ -90,18 +89,19 @@ public class ConvertCurrency {
 	}
 
 	public String sendSms() throws TwilioRestException, IOException {
-		TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
+		TwilioRestClient client = new TwilioRestClient(config.getTwilioAccountSid(), config.getTwilioAuthToken());
 		double inr = getInr();
 		String inr2 = Double.toString(inr);
-		 String htm = "http://maven.abhis.ws/visus/" + createVisualization();
-	    // Build a filter for the MessageList
-	    List<NameValuePair> params = new ArrayList<NameValuePair>();
-	    params.add(new BasicNameValuePair("Body", "Todays rate: " + inr2 + ". Visu: " + htm));
-	    params.add(new BasicNameValuePair("To", toNumber));
-	    params.add(new BasicNameValuePair("From", fromNumber)); 
-	     
-	    MessageFactory messageFactory = client.getAccount().getMessageFactory();
-	    Message message = messageFactory.create(params);
-	    return message.getSid();
+		String htm = config.getWebBasePath() + createVisualization();
+		// Build a filter for the MessageList
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("Body", "Todays rate: " + inr2
+				+ ". Visu: " + htm));
+		params.add(new BasicNameValuePair("To", config.getToNumber()));
+		params.add(new BasicNameValuePair("From", config.getFromNumber()));
+
+		MessageFactory messageFactory = client.getAccount().getMessageFactory();
+		Message message = messageFactory.create(params);
+		return message.getSid();
 	}
 }
