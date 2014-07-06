@@ -10,13 +10,21 @@ Example configuration file (config.json)
 -----------------------------------------
 
 {
+
     "twilioAccountSid": "xxxxxxxxxxxxxxx",
+    
     "twilioAuthToken": "xxxxxxxxxxxxxxx",
+    
     "toNumber": "+1xxxxxxxxxxx",
+    
     "fromNumber": "+1xxxxxxxxx",
+    
     "htmlPath": "/var/www/html/",
+    
     "webBasePath": "http://example.com/",
+    
     "currencyDataFilename": "savedData.dat"
+    
 }
 
 Author: Abhishek Dey Das
