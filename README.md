@@ -44,4 +44,4 @@ NOTE: More the frequency, better would be the line chart.
 
 Author: Abhishek Dey Das
 
-Contact: abhishek@abhis.ws
+Contact: http://abhis.ws
