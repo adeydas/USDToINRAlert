@@ -9,23 +9,23 @@ Sends the current rate along with a line chart of fluctuation based on historica
 Example configuration file (config.json)
 -----------------------------------------
 
-{
+	{
 
-    "twilioAccountSid": "xxxxxxxxxxxxxxx",
+    	"twilioAccountSid": "xxxxxxxxxxxxxxx",
     
-    "twilioAuthToken": "xxxxxxxxxxxxxxx",
+    	"twilioAuthToken": "xxxxxxxxxxxxxxx",
     
-    "toNumber": "+1xxxxxxxxxxx",
+    	"toNumber": "+1xxxxxxxxxxx",
     
-    "fromNumber": "+1xxxxxxxxx",
+    	"fromNumber": "+1xxxxxxxxx",
     
-    "htmlPath": "/var/www/html/",
+    	"htmlPath": "/var/www/html/",
     
-    "webBasePath": "http://example.com/",
+    	"webBasePath": "http://example.com/",
     
-    "currencyDataFilename": "savedData.dat"
+    	"currencyDataFilename": "savedData.dat"
     
-}
+	}
 
 Author: Abhishek Dey Das
 
