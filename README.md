@@ -5,6 +5,9 @@ A simple program to send USD to INR conversion rates regularly via SMS using Twi
 
 Sends the current rate along with a line chart of fluctuation based on historical data.
 
+The program uses Open Exchange Rate (https://openexchangerates.org) to get the current exchange rate 
+and Twilio (http://twilio.com) to send SMS's. 
+
 
 Example configuration file (config.json)
 -----------------------------------------
@@ -23,7 +26,9 @@ Example configuration file (config.json)
     
     	"webBasePath": "http://example.com/",
     
-    	"currencyDataFilename": "savedData.dat"
+    	"currencyDataFilename": "savedData.dat",
+    	
+    	"openexchangerateAppId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     
 	}
 	

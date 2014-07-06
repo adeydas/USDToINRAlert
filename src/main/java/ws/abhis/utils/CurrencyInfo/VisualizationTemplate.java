@@ -36,7 +36,7 @@ public class VisualizationTemplate {
 		for (int i=0; i<allCurrs.size(); i++) {
 			ret += "[";
 			ret += Integer.toString(i) + ", ";
-			ret += Double.toString(allCurrs.get(i).getRate());
+			ret += Double.toString(allCurrs.get(i).getRates().get("INR"));
 			ret += "],\n";
 		}
 		ret = ret.substring(0, ret.length()-1);

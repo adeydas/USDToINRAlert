@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,13 @@ import com.twilio.sdk.resource.instance.Message;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ConvertCurrency {
-	private static final String uri = "http://rate-exchange.appspot.com/currency?from=usd&to=inr";
+	private String uri = "https://openexchangerates.org/api/latest.json?app_id=";
 	private static final String USER_AGENT = "abhis.ws";
 	private static final Logger logger = LogManager.getLogger();
 	private Configuration config;
@@ -35,7 +35,10 @@ public class ConvertCurrency {
 	}
 	
 
+	
+	
 	private String getFromApi() throws IOException {
+		uri = uri + config.getOpenexchangerateAppId();
 		URL obj = new URL(uri);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -64,9 +67,10 @@ public class ConvertCurrency {
 		ObjectMapper mapper = new ObjectMapper();
 		CurrencyType objCurrencyType = mapper.readValue(response,
 				CurrencyType.class);
+		
 		SerializeCurrencyData objSerialize = new SerializeCurrencyData(config);
 		objSerialize.saveCurrencyData(objCurrencyType);
-		return objCurrencyType.getRate();
+		return objCurrencyType.getRates().get("INR");
 	}
 
 	public String createVisualization() throws FileNotFoundException {

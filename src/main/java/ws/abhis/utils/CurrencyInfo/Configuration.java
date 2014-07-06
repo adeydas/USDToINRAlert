@@ -8,6 +8,14 @@ public class Configuration {
 	protected String htmlPath;
 	protected String webBasePath;
 	protected String currencyDataFilename;
+	protected String openexchangerateAppId;
+	
+	public String getOpenexchangerateAppId() {
+		return openexchangerateAppId;
+	}
+	public void setOpenexchangerateAppId(String openexchangerateAppId) {
+		this.openexchangerateAppId = openexchangerateAppId;
+	}
 	public String getTwilioAccountSid() {
 		return twilioAccountSid;
 	}

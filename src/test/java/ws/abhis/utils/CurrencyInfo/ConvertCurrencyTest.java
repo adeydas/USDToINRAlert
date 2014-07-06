@@ -1,29 +1,25 @@
 package ws.abhis.utils.CurrencyInfo;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.twilio.sdk.TwilioRestException;
-
 import junit.framework.TestCase;
 
 public class ConvertCurrencyTest extends TestCase {
-	public void testApp() {
+	public void testAppUpdate()  {
 		try {
-			StartApplication.main(null);
+			StartApplication.main(new String[] {"update"});
 			assertTrue(true);
-		} catch (JsonParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			assertTrue(false);
-		} catch (JsonMappingException e) {
+		} 
+	}
+	
+	public void testAppSend() {
+		try {
+			StartApplication.main(new String[] {"send"});
+			assertTrue(true);
+		} catch (Exception e) {
 			e.printStackTrace();
 			assertTrue(false);
-		} catch (IOException e) {
-			e.printStackTrace();
-			assertTrue(false);
-		}
-		
+		} 
 	}
 }

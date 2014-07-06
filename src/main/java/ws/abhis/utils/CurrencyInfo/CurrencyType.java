@@ -1,29 +1,43 @@
 package ws.abhis.utils.CurrencyInfo;
 
 import java.io.Serializable;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 public class CurrencyType implements Serializable {
-	private String to;
-	private double rate;
-	private String from;
-	public String getTo() {
-		return to;
+	private String disclaimer;
+	private long timestamp;
+	private String license;
+	public String getLicense() {
+		return license;
 	}
-	public void setTo(String to) {
-		this.to = to;
+	public void setLicense(String license) {
+		this.license = license;
 	}
-	
-	public double getRate() {
-		return rate;
+	private String base;
+	private Map<String, Double> rates;
+	public String getDisclaimer() {
+		return disclaimer;
 	}
-	public void setRate(double rate) {
-		this.rate = rate;
+	public void setDisclaimer(String disclaimer) {
+		this.disclaimer = disclaimer;
 	}
-	public String getFrom() {
-		return from;
+	public long getTimestamp() {
+		return timestamp;
 	}
-	public void setFrom(String from) {
-		this.from = from;
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+	public String getBase() {
+		return base;
+	}
+	public void setBase(String base) {
+		this.base = base;
+	}
+	public Map<String, Double> getRates() {
+		return rates;
+	}
+	public void setRates(Map<String, Double> rates) {
+		this.rates = rates;
 	}
 }
