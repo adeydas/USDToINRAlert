@@ -15,9 +15,9 @@ public class StartApplication {
 	
 	private static final Logger logger = LogManager.getLogger(StartApplication.class);
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException, ConfigurationException  {
 		if (args.length<=0) {
-			throw new Exception("Pass argument update or send");
+			throw new ConfigurationException("Pass argument update or send");
 		}
 		
 		String param = args[0];
@@ -39,7 +39,7 @@ public class StartApplication {
 				String sid = objConveryCurrency.sendSms();
 				logger.info("Completed with sid " + sid);
 			} else {
-				throw new Exception("Unknown param passed");
+				throw new ConfigurationException("Unknown param passed");
 			}
 		} catch (TwilioRestException e) {
 			logger.error(e);

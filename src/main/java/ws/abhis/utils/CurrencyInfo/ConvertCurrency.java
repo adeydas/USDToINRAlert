@@ -1,6 +1,7 @@
 package ws.abhis.utils.CurrencyInfo;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -73,16 +74,20 @@ public class ConvertCurrency {
 		return objCurrencyType.getRates().get("INR");
 	}
 
-	public String createVisualization() throws FileNotFoundException {
+	public String createVisualization() throws IOException {
 		SerializeCurrencyData obj = new SerializeCurrencyData(config);
 		AllCurrencyData acd = obj.retrieveCurrencyData();
 		VisualizationTemplate objVisu = new VisualizationTemplate();
-		if (acd != null) {
+		if (acd != null && acd.allData != null) {
 			String finalHtml = objVisu.createVisualizationHtml(acd);
 			Random rd = new Random();
 			int nxt = rd.nextInt();
 			String n = Integer.toString(nxt);
 			String totalPath = config.getHtmlPath() + n + ".html";
+			File f = new File(totalPath);
+			if (!f.exists()) {
+				f.createNewFile();
+			}
 			PrintWriter out = new PrintWriter(totalPath);
 			out.println(finalHtml);
 			out.close();
