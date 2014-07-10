@@ -39,9 +39,9 @@ Example configuration file (config.json)
     	
     	"openexchangerateAppId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     	
-    	"pushOverToken": "aEbGKba2tCYJ2nppZrsFnb6NFCsLb5",
+    	"pushOverToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     	
-    	"pushOverUser": "uYxCKxxpCsRReXEE9nNXt15r5ZebdG"
+    	"pushOverUser": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     
 	}
 	
