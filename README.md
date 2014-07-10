@@ -12,7 +12,8 @@ New updates
 -----------
 
 Instead of sending a text message periodically, now sends a text message when the exchange rate is equal or 
-greater than the highest exchange rate based on historical data.
+greater than the highest exchange rate based on historical data. It also sends a text message if the exchange rate 
+is greater than the historical average.
 
 
 Example configuration file (config.json)
