@@ -15,6 +15,8 @@ Instead of sending a text message periodically, now sends a text message when th
 greater than the highest exchange rate based on historical data. It also sends a text message if the exchange rate 
 is greater than the historical average.
 
+Added PushOver support (http://pushover.net) to receive push message as well.
+
 
 Example configuration file (config.json)
 -----------------------------------------
@@ -35,7 +37,11 @@ Example configuration file (config.json)
     
     	"currencyDataFilename": "savedData.dat",
     	
-    	"openexchangerateAppId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    	"openexchangerateAppId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    	
+    	"pushOverToken": "aEbGKba2tCYJ2nppZrsFnb6NFCsLb5",
+    	
+    	"pushOverUser": "uYxCKxxpCsRReXEE9nNXt15r5ZebdG"
     
 	}
 	

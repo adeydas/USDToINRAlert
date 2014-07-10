@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
@@ -18,6 +19,8 @@ import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.MessageFactory;
 import com.twilio.sdk.resource.instance.Message;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.LogManager;
@@ -97,11 +100,13 @@ public class ConvertCurrency {
 			message = "RED ALERT: Current rate is greater than highest historical rate. Rate: "
 					+ currentRate;
 			sendSms(currentRate, message);
+			sendPushMessage(currentRate, message);
 		}
 		if (currentRate >= average) {
 			message = "YELLOW ALERT: Current rate is greater than historical average. Rate: "
 					+ currentRate + " Average: " + average;
-			sendSms(currentRate, message);
+			//sendSms(currentRate, message);
+			sendPushMessage(currentRate, message);
 		}
 	}
 
@@ -126,6 +131,35 @@ public class ConvertCurrency {
 		} else {
 			return null;
 		}
+	}
+	
+	public void sendPushMessage(Double currentRate, String messageSend) throws IOException {
+		String htm = config.getWebBasePath() + createVisualization();
+		String url = "https://api.pushover.net/1/messages.json";
+        InputStream in = null;
+        try {
+            HttpClient client = new HttpClient();
+            PostMethod method = new PostMethod(url);
+
+            //Add any parameter if u want to send it with Post req.
+            method.addParameter("token", config.getPushOverToken());
+            method.addParameter("user", config.getPushOverUser());
+            method.addParameter("message", messageSend);
+            method.addParameter("title", "USD to INR exchange rate alert");
+            method.addParameter("url", htm);
+            method.addParameter("url_title", "Visualization of data");
+
+            int statusCode = client.executeMethod(method);
+
+            if (statusCode != -1) {
+                in = method.getResponseBodyAsStream();
+            }
+
+            logger.info("Received from push over: " + in);
+
+        } catch (Exception e) {
+            logger.error(e);
+        }
 	}
 
 	public String sendSms(Double currentRate, String messageSend)

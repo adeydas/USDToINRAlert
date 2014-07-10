@@ -9,7 +9,21 @@ public class Configuration {
 	protected String webBasePath;
 	protected String currencyDataFilename;
 	protected String openexchangerateAppId;
+	protected String pushOverToken;
+	protected String pushOverUser;
 	
+	public String getPushOverToken() {
+		return pushOverToken;
+	}
+	public void setPushOverToken(String pushOverToken) {
+		this.pushOverToken = pushOverToken;
+	}
+	public String getPushOverUser() {
+		return pushOverUser;
+	}
+	public void setPushOverUser(String pushOverUser) {
+		this.pushOverUser = pushOverUser;
+	}
 	public String getOpenexchangerateAppId() {
 		return openexchangerateAppId;
 	}
