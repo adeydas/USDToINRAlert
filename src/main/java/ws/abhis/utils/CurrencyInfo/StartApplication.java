@@ -16,11 +16,7 @@ public class StartApplication {
 	private static final Logger logger = LogManager.getLogger(StartApplication.class);
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException, ConfigurationException  {
-		if (args.length<=0) {
-			throw new ConfigurationException("Pass argument update or send");
-		}
 		
-		String param = args[0];
 		
 		//Initialize configuration
 		File f = new File("config.json");
@@ -32,18 +28,8 @@ public class StartApplication {
 		
 		ConvertCurrency objConveryCurrency = new ConvertCurrency(config);
 		try {
-			param = param.toLowerCase().trim();
-			if (param.equals("update")) {
-				objConveryCurrency.getInr();
-			} else if (param.equals("send")) {
-				String sid = objConveryCurrency.sendSms();
-				logger.info("Completed with sid " + sid);
-			} else {
-				throw new ConfigurationException("Unknown param passed");
-			}
+			Double d = objConveryCurrency.getInr();
 		} catch (TwilioRestException e) {
-			logger.error(e);
-		} catch (IOException e) {
 			logger.error(e);
 		}
 	}

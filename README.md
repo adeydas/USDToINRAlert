@@ -8,6 +8,12 @@ Sends the current rate along with a line chart of fluctuation based on historica
 The program uses Open Exchange Rate (https://openexchangerates.org) to get the current exchange rate 
 and Twilio (http://twilio.com) to send SMS's. 
 
+New updates
+-----------
+
+Instead of sending a text message periodically, now sends a text message when the exchange rate is equal or 
+greater than the highest exchange rate based on historical data.
+
 
 Example configuration file (config.json)
 -----------------------------------------
@@ -40,18 +46,9 @@ Compile the source code and package it using the maven assembly plugin. Command 
 
 	mvn assembly:single
 	
-To update the database, run
-
-	java -jar <app.jar> update
-	
-To send text and update the database, run
-
-	java -jar <app.jar> send
-
-NOTE: More the frequency, better would be the line chart.
-
+Setup a CRON job to run the jar periodically.
 
 
 Author: Abhishek Dey Das
 
-Contact: http://abhis.ws
+Contact: http://abhis.ws / http://adeydas.com

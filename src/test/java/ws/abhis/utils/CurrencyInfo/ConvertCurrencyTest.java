@@ -1,25 +1,18 @@
 package ws.abhis.utils.CurrencyInfo;
 
 import junit.framework.TestCase;
+import ws.abhis.utils.CurrencyInfo.*;
 
 public class ConvertCurrencyTest extends TestCase {
-	public void testAppUpdate()  {
+	public void testAppUpdate() {
 		try {
-			StartApplication.main(new String[] {"send"});
+			StartApplication.main(null);
 			assertTrue(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			assertTrue(false);
-		} 
+		}
 	}
+
 	
-	/*public void testAppSend() {
-		try {
-			StartApplication.main(new String[] {"send"});
-			assertTrue(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			assertTrue(false);
-		} 
-	}*/
 }

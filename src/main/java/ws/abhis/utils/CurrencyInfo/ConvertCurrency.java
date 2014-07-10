@@ -33,13 +33,14 @@ public class ConvertCurrency {
 	
 	public ConvertCurrency(Configuration config) {
 		this.config = config;
+		uri = uri + config.getOpenexchangerateAppId();
 	}
 	
 
 	
 	
 	private String getFromApi() throws IOException {
-		uri = uri + config.getOpenexchangerateAppId();
+		//uri = uri + config.getOpenexchangerateAppId();
 		URL obj = new URL(uri);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -62,7 +63,7 @@ public class ConvertCurrency {
 		return response.toString();
 	}
 
-	public double getInr() throws IOException {
+	public double getInr() throws IOException, TwilioRestException {
 		String response = getFromApi();
 		logger.info("Response received: " + response);
 		ObjectMapper mapper = new ObjectMapper();
@@ -71,7 +72,27 @@ public class ConvertCurrency {
 		
 		SerializeCurrencyData objSerialize = new SerializeCurrencyData(config);
 		objSerialize.saveCurrencyData(objCurrencyType);
-		return objCurrencyType.getRates().get("INR");
+		Double d = objCurrencyType.getRates().get("INR");
+		checkToSend(d);
+		return d;
+	}
+	
+	private void checkToSend(Double currentRate) throws TwilioRestException, IOException {
+		SerializeCurrencyData objSerialize = new SerializeCurrencyData(config);
+		AllCurrencyData cd = objSerialize.retrieveCurrencyData();
+		List<CurrencyType> allData = cd.allData;
+		double total = 0.0;
+		int i = 0;
+		for (i = 0; i<allData.size(); i++) {
+			double d = allData.get(i).getRates().get("INR");
+			if (d > total) {
+				total = d;
+			}
+		}
+		
+		if (currentRate >= total) {
+			sendSms(currentRate);
+		}
 	}
 
 	public String createVisualization() throws IOException {
@@ -97,15 +118,14 @@ public class ConvertCurrency {
 		}
 	}
 
-	public String sendSms() throws TwilioRestException, IOException {
+	public String sendSms(Double currentRate) throws TwilioRestException, IOException {
 		TwilioRestClient client = new TwilioRestClient(config.getTwilioAccountSid(), config.getTwilioAuthToken());
-		double inr = getInr();
-		String inr2 = Double.toString(inr);
+		//double inr = getInr();
+		//String inr2 = Double.toString(inr);
 		String htm = config.getWebBasePath() + createVisualization();
 		// Build a filter for the MessageList
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("Body", "Todays rate: " + inr2
-				+ ". Visu: " + htm));
+		params.add(new BasicNameValuePair("Body", "Time to send back some money. Current rate is " + currentRate + " more or equal to the highest so far. Chart: " + htm));
 		params.add(new BasicNameValuePair("To", config.getToNumber()));
 		params.add(new BasicNameValuePair("From", config.getFromNumber()));
 
