@@ -64,7 +64,7 @@ public class ConvertCurrency {
 	}
 
 	public double getInr() throws IOException, TwilioRestException {
-		
+
 		String response = getFromApi();
 		logger.info("Response received: " + response);
 		ObjectMapper mapper = new ObjectMapper();
@@ -105,7 +105,7 @@ public class ConvertCurrency {
 		if (currentRate >= average) {
 			message = "YELLOW ALERT: Current rate is greater than historical average. Rate: "
 					+ currentRate + " Average: " + average;
-			//sendSms(currentRate, message);
+			// sendSms(currentRate, message);
 			sendPushMessage(currentRate, message);
 		}
 	}
@@ -132,34 +132,35 @@ public class ConvertCurrency {
 			return null;
 		}
 	}
-	
-	public void sendPushMessage(Double currentRate, String messageSend) throws IOException {
+
+	public void sendPushMessage(Double currentRate, String messageSend)
+			throws IOException {
 		String htm = config.getWebBasePath() + createVisualization();
 		String url = "https://api.pushover.net/1/messages.json";
-        InputStream in = null;
-        try {
-            HttpClient client = new HttpClient();
-            PostMethod method = new PostMethod(url);
+		InputStream in = null;
+		try {
+			HttpClient client = new HttpClient();
+			PostMethod method = new PostMethod(url);
 
-            //Add any parameter if u want to send it with Post req.
-            method.addParameter("token", config.getPushOverToken());
-            method.addParameter("user", config.getPushOverUser());
-            method.addParameter("message", messageSend);
-            method.addParameter("title", "USD to INR exchange rate alert");
-            method.addParameter("url", htm);
-            method.addParameter("url_title", "Visualization of data");
+			// Add any parameter if u want to send it with Post req.
+			method.addParameter("token", config.getPushOverToken());
+			method.addParameter("user", config.getPushOverUser());
+			method.addParameter("message", messageSend);
+			method.addParameter("title", "USD to INR exchange rate alert");
+			method.addParameter("url", htm);
+			method.addParameter("url_title", "Visualization of data");
 
-            int statusCode = client.executeMethod(method);
+			int statusCode = client.executeMethod(method);
 
-            if (statusCode != -1) {
-                in = method.getResponseBodyAsStream();
-            }
+			if (statusCode != -1) {
+				in = method.getResponseBodyAsStream();
+			}
 
-            logger.info("Received from push over: " + in);
+			logger.info("Received from push over: " + in);
 
-        } catch (Exception e) {
-            logger.error(e);
-        }
+		} catch (Exception e) {
+			logger.error(e);
+		}
 	}
 
 	public String sendSms(Double currentRate, String messageSend)
@@ -169,14 +170,31 @@ public class ConvertCurrency {
 		// double inr = getInr();
 		// String inr2 = Double.toString(inr);
 		String htm = config.getWebBasePath() + createVisualization();
-		// Build a filter for the MessageList
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("Body", messageSend + " Chart: " + htm));
-		params.add(new BasicNameValuePair("To", config.getToNumber()));
-		params.add(new BasicNameValuePair("From", config.getFromNumber()));
 
-		MessageFactory messageFactory = client.getAccount().getMessageFactory();
-		Message message = messageFactory.create(params);
-		return message.getSid();
+		String numbers = config.getToNumber();
+		String[] nos = null;
+		if (!numbers.contains(",")) {
+			nos = new String[]{numbers};
+		} else {
+			String[] f = numbers.split(",");
+			nos = new String[f.length];
+			nos = f;
+		}
+		
+		String messageIds = "";
+		for (int i = 0; i < nos.length; i++) {
+			// Build a filter for the MessageList
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("Body", messageSend + " Chart: "
+					+ htm));
+			params.add(new BasicNameValuePair("To", nos[i]));
+			params.add(new BasicNameValuePair("From", config.getFromNumber()));
+
+			MessageFactory messageFactory = client.getAccount()
+					.getMessageFactory();
+			Message message = messageFactory.create(params);
+			messageIds += message.getSid();
+		}
+		return messageIds;
 	}
 }
